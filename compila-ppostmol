@@ -1,6 +1,8 @@
 #!/bin/bash
 
+# SOURCE DIRECTORY
 DIRCOM=/home/capecchi/SyncDir/MOLOCH/tmp/v22
+# DIR OF ECCODES INSTALL DIR
 DIRECC=/home/capecchi/SyncDir/build-moloch-with-gfortran/eccodes/eccodes-gfortran-installdir
 
 # ifort
@@ -17,7 +19,9 @@ echo
 echo
 echo "COMPILING..." 
 echo
-
+####################
+# CHECK mpif90 FIRST
+####################
 mpif90 $COPT -o $DIRCOM/write_grib2_data.o -c -I$DIRECC/include -L$DIRECC/lib -leccodes_f90 -leccodes $DIRCOM/write_grib2_data.F90
 mpif90 $COPT -o $DIRCOM/prepar_grib2_coding_data.o -c $DIRCOM/prepar_grib2_coding_data.F90
 #mpif90 $COPT -o ppostmol.exe -I$DIRECC/include -L $DIRECC/lib -leccodes_f90 -leccodes $DIRCOM/write_grib2_data.o $DIRCOM/prepar_grib2_coding_data.o ppostmol.F90

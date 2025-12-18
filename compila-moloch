@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# DIR OF ECMWF RADIATION LIBRARY
 RE=/home/capecchi/SyncDir/MOLOCH/tmp/rad_ecmwf
 
 VERSION=`readlink -f version`
@@ -30,6 +31,9 @@ COPT="-ip -O3 -warn none -vec-report0 -W0 -assume cc_omp"
 # gfortran
 COPT="-flto -O3 -w -fopenmp -Wall -Wextra -fallow-argument-mismatch"
 
+####################
+# CHECK mpif90 FIRST
+####################
 mpif90 $COPT -D split -D splitshf -o moloch.o -c -I$RE/module -I$RE/module_aux -I$RE/include moloch.F90
 mpif90 $COPT -D split -D splitshf -o moloch.exe moloch.o $RE/source/*.o $RE/module/*.o $RE/module_aux/*.o
 
@@ -38,4 +42,4 @@ rm *.mod *.o
 echo "DONE!" 
 echo
 
-exit
+exit 0;

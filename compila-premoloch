@@ -1,11 +1,15 @@
 #!/bin/bash
 
+# DIR OF ECCODES INSTALL DIR
 DIRECC=/home/capecchi/SyncDir/build-moloch-with-gfortran/eccodes/eccodes-gfortran-installdir
 # ifort
 # OPT="-ip -O3 -W0 -warn none -xHost"
 # gfortran
 OPT="-flto -O3 -w -Wall -Wextra"
+# DIRECTORY VERSION
 DIRVER=v22/
+# COMPILER
+FC=gfortran 
 
 rm -f premoloch.exe
 
@@ -21,7 +25,6 @@ readlink -f dimensions.inc
 echo
 echo "COMPILING.....takes some minutes..."
 
-FC=gfortran 
 $FC -c $OPT -I${DIRECC}/include -L${DIRECC}/lib -leccodes_f90 -leccodes $DIRVER/read_grib2_data.F90 -o read_grib2_data.o
 $FC -c $OPT $DIRVER/common_routines.F90 -o common_routines.o
 $FC -c $OPT premoloch.F90 -o premoloch.o
@@ -32,4 +35,4 @@ rm *.mod *.o
 echo
 echo "All done.."
 
-exit
+exit 0;
