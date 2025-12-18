@@ -1,0 +1,30 @@
+#!/bin/bash
+
+DIRCOM=/home/capecchi/SyncDir/MOLOCH/tmp/v22
+DIRECC=/home/capecchi/SyncDir/build-moloch-with-gfortran/eccodes/eccodes-gfortran-installdir
+
+# ifort
+# COPT="-ip -O3 -warn none -vec-report0 -W0 -assume cc_omp"
+# gfortran
+COPT="-flto -O3 -Wall -Wextra -w -fopenmp -fallow-argument-mismatch"
+
+POST=`readlink -f ppostmol.F90`
+
+echo
+echo
+echo "PPOST VERSION:       "$POST
+echo
+echo
+echo "COMPILING..." 
+echo
+
+mpif90 $COPT -o $DIRCOM/write_grib2_data.o -c -I$DIRECC/include -L$DIRECC/lib -leccodes_f90 -leccodes $DIRCOM/write_grib2_data.F90
+mpif90 $COPT -o $DIRCOM/prepar_grib2_coding_data.o -c $DIRCOM/prepar_grib2_coding_data.F90
+#mpif90 $COPT -o ppostmol.exe -I$DIRECC/include -L $DIRECC/lib -leccodes_f90 -leccodes $DIRCOM/write_grib2_data.o $DIRCOM/prepar_grib2_coding_data.o ppostmol.F90
+mpif90 $COPT -o ppostmol.exe \
+    $DIRCOM/write_grib2_data.o \
+    $DIRCOM/prepar_grib2_coding_data.o \
+    ppostmol.F90 \
+    -I$DIRECC/include -L$DIRECC/lib -leccodes_f90 -leccodes
+
+rm *.mod 

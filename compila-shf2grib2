@@ -1,0 +1,23 @@
+#!/bin/bash
+
+DIRVER=version
+
+echo
+echo "VERSION: " 
+echo
+readlink -f $DIRVER
+echo
+
+
+RE=/cluster/isac/build/rad_ecmwf
+DIRECC=/cluster/universal/eccodes-2.10.0
+
+
+COMPIL=ifort
+COPT="-O2 -xHost"
+
+$COMPIL $COPT -c -I$DIRECC/include $DIRVER/write_grib2_data.F90
+$COMPIL $COPT -c -I$DIRECC/include $DIRVER/shf2grib2.F90 -o shf2grib2.o
+$COMPIL $COPT shf2grib2.o write_grib2_data.o -L$DIRECC/lib -leccodes_f90 -leccodes -o ppostmol_shf.exe
+
+rm *.mod *.o
