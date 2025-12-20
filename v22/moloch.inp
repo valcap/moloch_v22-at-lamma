@@ -1,0 +1,46 @@
+&model
+ dtstep=24., nadv=3, nsound=5,
+ ddamp=.01, nbl=8, nradm=2,
+ hrun=30., hist=1., hbound=1., hdiag=1.,
+ srad=480., mswshf=60., htop=0.92,
+ nlmic2=.f., nlbfix=.f., nlana=.t.,
+ nltwice=.f., nlhdiff=.f., nlconv=.f., nlord=.f., nlsnudg=.f., 
+ nlradar=.f., nlwshf=.t., mhfr=1,
+ hback=-0.1, hspray= -.5, nxspray=150, nyspray=150, nzspray=45,
+ xsorg=11.017, ysorg=44.45
+&end
+
+ dtstep:  integration time step (in seconds)
+ nadv:    number of advection steps in dtstep sec.
+ nsound:  number of steps for sound waves
+ nbl:     no. of lateral boundary lines
+ nradm:   radiation scheme flag: 0 - no radiation,
+                                 1 - Geleyn only every srad seconds
+                                 2 - Geleyn and ECMWF combined
+ hrun:    forecast duration in hours
+ hist:    interval (in hours) between two writings of model output (mhf)
+ hbound:  interval (in hours) between two boundary conditions
+ hdiag:   interval (in hours) between two model diagnostics printouts
+ srad:    interval (in seconds) between two calls of radiation-convection param.
+          900. sec suggested if nlconv is true
+          (meglio se srad*4 sottomultiplo di 3600 e multiplo di dtstep)
+ mswshf:  interval (in minutes) between two writings of surface fields (shf)
+ htop:    fraction of vertical column where microphys. and turbul. are
+          active (<= 1.)
+ nlmic2:  if true, 2-moment microphysics
+ nlbfix:  if true, fixed boundary conditions
+ nlana:   if true, saves initial condition in output (mhf)
+ nltwice: it true, double computation of vertical advection per timestep
+ nlhdiff: if true, computes horizontal turbulent diffusion
+ nlconv:  if true, parameterization of convection is included
+ nlord:   if true, orographic drag (block+GW)
+ nlddamp: if true, explicit divergence dumping
+ nlradar: if true, simulation of radar reflectivity
+ nlwshf:  if true, writes surface fields (shf)
+ mhfr:    1: full mhf resolution; 2: half mhf resolution
+ hback:   interval (in hours) between two outputs of trajectory file
+          (if negative, file is not written)
+ hspray:  interval (in hours) between two outputs of SPRAY file
+          (if negative, file is not written)
+
+

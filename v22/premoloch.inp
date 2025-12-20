@@ -1,0 +1,55 @@
+&PARAM_PREMOLOCH
+ INPUT_FORMAT="grib2", INPUT_FILE_STD=2,
+ NLEV=60, NLEVG= 7, A0=0., B0= 0.25,
+ SLT= 6.E-2, 6.E-2, 12.E-2, 18.E-2, 30.E-2, 48.E-2, 78.E-2,
+ -1., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1., -1.,
+ INST_START=1, INST_STOP=31
+ NLEV_ATM_INP_MAX= 150, NLEV_SOIL_INP_MAX= 10
+&END
+
+-------   PARAMETERS OF THE OUTPUT MODEL (MOLOCH) GRID  ------
+
+ NLEV, NLEVG: number of Moloch atmospheric and soil levels
+ A0: parameter in decay function (A0>=0, A0<1).
+ B0: stretching parameter (0.2 < B0 <=1), defining the Moloch hybrid vertical coordinate:
+ reducing B0 from 1. decreases the height of the lowest model level above the surface.
+ SLT(20): thickness of soil layers (m); if any SLT()<0. and NLEVG is equal to the no. of
+ soil layers of the input model, then SLT() are redefined equal to the values of the input model.
+
+-------  PARAMETERS OF THE INPUT DATA FILES  -------
+
+ INPUT_FORMAT: 'grib2' for NOAA-GFS, ECMWF-IFS, COSMO input data;
+               'mhfb' for Bolam or Globo models (CNR-ISAC) input data;
+               'mhfm' for Moloch model (CNR-ISAC) input data.
+ INPUT_FILE_STD: used for INPUT_FORMAT='mhfb' or 'mhfm'. It denotes:
+                 1 - single file (all instants contained in the same file),
+                 2 - multiple files (one file for each instant).
+                 If INPUT_FORMAT = 'grib2', the input files must be named:
+                 'grib_001', 'grib_002', 'grib_003', ...
+                 If INPUT_FORMAT = 'mhfb' and INPUT_FILE_STD = 1,
+                 the input file must be named 'mhfb'.
+                 If INPUT_FORMAT = 'mhfb' and INPUT_FILE_STD = 2,
+                 the input files must be named 'mhfb_001', 'mhfb_002', 'mhfb_003',...
+                 If INPUT_FORMAT = 'mhfm' and INPUT_FILE_STD = 1,
+                 the input file must be named 'mhfm'.
+                 If INPUT_FORMAT = 'mhfm' and INPUT_FILE_STD = 2,
+                 the input files must be named 'mhfm_001', 'mhfm_002', 'mhfm_003',...
+ NLEV_ATM_INP_MAX:  Max. possible number of atmospheric levels of the input data.
+ NLEV_SOIL_INP_MAX: Max. possible number of soil levels of the input data.
+
+-------  EXECUTION PARAMETERS  -------
+
+ INST_START: progressive number of the first instant in input data used as initial
+ condition for Moloch. It can be > 1 in the case of mhfb or mhfm input data with
+ input_file_std = 1 (see below).
+ INST_STOP: progressive number of the last instant in input data used as lateral
+ boundary condition for Moloch.
+ Note: in the case of premoloch applied to different input files (one file for the
+ analysis and one file for each forecast time of the input model, as it is the case
+ of the operational mode) it is recommended to use INST_START=1 and INST_STOP=1 for
+ processing the fist input file, and and to use INST_START=1 and INST_STOP=0
+ for all the other subsequent input files. This trick speeds up processing in case
+ of files defining the moloch lateral boundary conditions, for which variables at
+ the surface are not computed and atmospheric variables along frames are computed
+ only along lateral frames.
+
